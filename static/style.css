@@ -1,0 +1,122 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", sans-serif;
+    background: #e0f7fa;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+/* Container */
+.container {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading */
+h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #00796b;
+}
+
+/* Form */
+form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+input[type="text"],
+select {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    flex: 1;
+    min-width: 200px;
+    background-color: white;
+}
+
+button {
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    border: none;
+    background: #00796b;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #004d40;
+}
+
+/* Forecast Section */
+h2 {
+    margin-bottom: 1rem;
+    color: #333;
+    text-align: center;
+}
+
+.forecast-list {
+    list-style: none;
+    padding: 0;
+}
+
+.forecast-item {
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.forecast-date {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+.forecast-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Error Message */
+p.error {
+    color: red;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .forecast-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    input[type="text"],
+    select,
+    button {
+        width: 100%;
+    }
+}
