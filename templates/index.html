@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>5-Day Weather Forecast</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>5-Day Weather Forecast</h1>
+        <div id="location-info">Detecting location...</div>
+        <div id="forecast"></div>
+    </div>
+
+    <script>
+        navigator.geolocation.getCurrentPosition(success, error);
+
+        function success(pos) {
+            const lat = pos.coords.latitude;
+            const lon = pos.coords.longitude;
+            fetch(`/weather?lat=${lat}&lon=${lon}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById("location-info").innerText = data.error;
+                        return;
+                    }
+                    document.getElementById("location-info").innerText = `Forecast for ${data.city}`;
+                    let html = "<ul>";
+                    data.forecasts.forEach(f => {
+                        html += `<li><strong>${f.date}</strong>: ${f.temp}°C, ${f.description}, Wind: ${f.wind} m/s</li>`;
+                    });
+                    html += "</ul>";
+                    document.getElementById("forecast").innerHTML = html;
+                });
+        }
+
+        function error() {
+            document.getElementById("location-info").innerText = "Location access denied.";
+        }
+    </script>
+</body>
+</html>
