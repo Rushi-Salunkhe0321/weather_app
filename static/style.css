@@ -1,0 +1,27 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #e0f7fa;
+    text-align: center;
+    padding: 2rem;
+}
+
+.container {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    display: inline-block;
+    text-align: left;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin: 10px 0;
+    padding: 10px;
+    background: #f1f1f1;
+    border-radius: 8px;
+}
