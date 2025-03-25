@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>5-Day Weather Forecast</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        async function fetchDates() {
+            const location = document.getElementById('location-input').value;
+            const dropdown = document.getElementById('forecast-day');
+            const forecastBox = document.getElementById('forecast-data');
+            const errorBox = document.getElementById('error');
+
+            // Reset previous data
+            dropdown.innerHTML = '';
+            forecastBox.innerHTML = '';
+            errorBox.textContent = '';
+
+            if (location.trim() === '') return;
+
+            try {
+                const res = await fetch(`/get_dates?location=${encodeURIComponent(location)}`);
+                const data = await res.json();
+
+                if (data.error) {
+                    errorBox.textContent = data.error;
+                    return;
+                }
+
+                // Build dropdown
+                dropdown.innerHTML = '<option value="">Next 5 Days Summary</option>';
+                data.dates.forEach(date => {
+                    const option = document.createElement('option');
+                    option.value = date;
+                    option.textContent = date;
+                    dropdown.appendChild(option);
+                });
+
+                document.getElementById('forecast-form').style.display = 'block';
+                document.getElementById('city-label').textContent = `City: ${data.city}`;
+            } catch (err) {
+                errorBox.textContent = 'Something went wrong.';
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Weather Forecast</h1>
+
+        <!-- Search input for location -->
+        <div style="margin-bottom: 1rem;">
+            <input type="text" id="location-input" placeholder="Enter city or ZIP code" required>
+            <button onclick="fetchDates()">Search</button>
+        </div>
+
+        <!-- Display error if any -->
+        <p id="error" class="error"></p>
+        <p id="city-label" style="text-align: center; margin-bottom: 1rem;"></p>
+
+        <!-- Forecast form (hidden until data is loaded) -->
+        <form method="POST" id="forecast-form" style="display: none;">
+            <input type="hidden" name="location" id="hidden-location">
+            <select name="forecast_day" id="forecast-day"></select>
+            <button type="submit">Get Forecast</button>
+        </form>
+
+        <!-- Forecast data area -->
+        <div id="forecast-data">
+            {% if weather %}
+                <h2>
+                    Forecast for {{ weather.city }}
+                    {% if weather.view_type == 'hourly' %} on {{ weather.selected_date }}{% endif %}
+                </h2>
+                <ul class="forecast-list">
+                    {% for day in weather.forecasts %}
+                        <li class="forecast-item">
+                            <div class="forecast-date">
+                                {% if weather.view_type == 'hourly' %}
+                                    {{ day.time }}
+                                {% else %}
+                                    {{ day.time.split(" ")[0] }}
+                                {% endif %}
+                            </div>
+                            <div class="forecast-info">
+                                <img src="http://openweathermap.org/img/wn/{{ day.icon }}@2x.png" alt="{{ day.description }}">
+                                <div>
+                                    <strong>{{ day.temp }}°C</strong> – {{ day.description }}<br>
+                                    💨 Wind: {{ day.wind }} m/s
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Sync hidden input with search input -->
+    <script>
+        document.getElementById('location-input').addEventListener('input', function() {
+            document.getElementById('hidden-location').value = this.value;
+        });
+    </script>
+</body>
+</html>
