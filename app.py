@@ -2,10 +2,14 @@ from flask import Flask, request, render_template, jsonify
 import requests
 from collections import defaultdict
 from datetime import datetime
+from dotenv import load_dotenv
+import os
 
+
+load_dotenv()
 
 app = Flask(__name__)
-API_KEY = "2fa8769414b4474f00bdaaa573a15bca"
+API_KEY = os.getenv("api_key") 
 
 # ✅ Add this route BEFORE the main "/" route
 @app.route("/get_dates")
